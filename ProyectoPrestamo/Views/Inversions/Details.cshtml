@@ -1,0 +1,111 @@
+﻿@model ProyectoPrestamo.Models.Inversion
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalles</h1>
+
+<div>
+    <h4>Inversion</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdCliente)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdCliente)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Monto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Monto)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Periodo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Periodo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Interes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Interes)
+        </dd>
+    </dl>
+</div>
+
+<!--TABLA DE AMORTIZACION-->
+
+<h1>Tabla Amortización:</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Inversion</th>
+            <th>Capital</th>
+            <th>Beneficio Neto</th>
+            <th>Benificio Total</th>
+        </tr>
+    </thead>
+
+    @{
+        double monto = Convert.ToDouble(Model.Monto);
+        double periodo = Convert.ToDouble(Model.Periodo);
+        double interes = Convert.ToDouble(Model.Interes);
+
+
+
+
+
+        //Formula cuota
+        double cuota = Math.Round((monto / periodo), 2);
+
+        //Formula Interes(beneficio neto)
+        interes = Math.Round((((monto * interes) / 100) / periodo), 2);
+
+        //Formula Capital
+        double capital = Convert.ToDouble(cuota + interes);
+        capital = Math.Round(capital, 2);
+
+
+        double contador = Math.Round(capital + interes, 2);
+        double capital_total = 0;
+
+
+        for (int i = 1; i <= periodo; i++)
+        {
+            //Capital total
+            capital_total = capital_total + contador;
+           
+
+
+            //tablas
+            <tbody>
+                <tr>
+                    <td>@i</td>
+                    <td>@cuota</td>
+                    <td>@capital</td>
+                    <td>@interes</td>
+                    <td>@capital_total</td>
+                </tr>
+            </tbody>
+        }
+      
+       
+
+
+    }
+
+
+
+     
+
+</table>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdInversion">Editar</a> |
+    <a asp-action="Index">Volver atras</a>
+</div>

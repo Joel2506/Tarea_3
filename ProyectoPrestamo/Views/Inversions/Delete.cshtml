@@ -1,0 +1,46 @@
+﻿@model ProyectoPrestamo.Models.Inversion
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Inversion</h1>
+<hr />
+<br />
+
+<h3>Estas seguro de eliminar este usuario?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdCliente)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdCliente)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Monto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Monto)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Periodo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Periodo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Interes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Interes)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IdInversion" />
+        <input type="submit" value="Elimnar" class="btn btn-danger" /> |
+        <a asp-action="Index">Volver atras</a>
+    </form>
+</div>

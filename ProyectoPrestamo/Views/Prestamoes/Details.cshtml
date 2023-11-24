@@ -1,0 +1,109 @@
+﻿@model ProyectoPrestamo.Models.Prestamo
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalles</h1>
+
+<div>
+    <h4>Prestamo</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdFiador)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdFiador)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Monto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Monto)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Periodo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Periodo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Interes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Interes)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdClienteNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdClienteNavigation.IdCliente)
+        </dd>
+    </dl>
+</div>
+
+<!--TABLA DE AMORTIZACION-->
+
+<h1>Tabla Amortización</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Cuota</th>
+            <th>Interes Mensual</th>
+            <th>Amortizacion Principal</th>
+            <th>Amortizacion Total</th>
+            <th>Capital Pendiente</th>
+        </tr>
+    </thead>
+    @{
+        double monto = Convert.ToDouble(Model.Monto);
+        double interes = Convert.ToDouble(Model.Interes) / 12000;
+        double periodo = Convert.ToDouble(Model.Periodo);
+
+        //Formula para generar # cuotas
+        var cuota = monto * (interes / (double)(1 - Math.Pow(1 + (double)interes, -periodo)));
+
+        double interes_mensual = 0;
+        double amortizacion = 0;
+        double amortizacion_total = 0;
+        int i = 1;
+
+        for (i = 1; i <= periodo; i++)
+        {
+            interes_mensual = Math.Round((interes * monto), 2);
+            monto = Math.Round(monto - cuota + interes_mensual, 2);
+
+            //Amortizacion Totales y principales
+            amortizacion_total += Math.Round(cuota - interes_mensual, 2);
+            amortizacion = cuota - interes_mensual;
+
+
+            <tbody>
+                <tr>
+                    <td>@i</td>
+                    <td>@Math.Round(cuota, MidpointRounding.AwayFromZero)</td>
+                    <td>@Math.Round(interes_mensual, MidpointRounding.AwayFromZero)</td>
+                    <td>@Math.Round(amortizacion, MidpointRounding.AwayFromZero)</td>
+                    <td>@Math.Round(amortizacion_total, MidpointRounding.AwayFromZero)</td>
+                    <td>@Math.Round(monto, MidpointRounding.AwayFromZero)</td>
+
+                </tr>
+            </tbody>
+
+
+        }
+
+
+    }
+
+</table>
+
+
+
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdPrestamo">Editar</a> |
+    <a asp-action="Index">Volver atras</a>
+</div>
